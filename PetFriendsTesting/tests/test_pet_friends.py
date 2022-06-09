@@ -13,7 +13,7 @@ def test_get_api_for_valid_user(email = valid_email, password = valid_password):
     # и в тесте содержится слово key
     assert status == 200 # сверяем статус код
     assert 'key' in result # сверяем наличие  'key' в result
-    print(result)
+
 def test_get_api_for_invalid_user(email = invalid_email, password = invalid_password):
     """ Негативный тест.Проверяем что запрос api ключа возвращает статус 400 при использовании невалидных данных
      email и password,
@@ -40,15 +40,15 @@ def test_get_all_pets_with_invalid_key(filter=""):
     # {"key" : "f4dc479e3b03b0641574eef89a034ee99d9f554a8119cf8d23139d2d-"}
 
     status, result = pf.get_list_of_pets(auth_key, filter)
-    assert  400 <= status < 500 # сверяем, статус код должен быть 4ХХ
+    assert 400 <= status < 500  # сверяем, статус код должен быть 4ХХ
 
 
-def test_add_new_pet_with_valid_data(name='барбоса ',animal_type='барборис ', age='2 ',pet_photo='images/dog2.jpg' ): #pet_photo='images/dog1.jpg'
+def test_add_new_pet_with_valid_data(name='барбоса ',animal_type='барборис ', age='2 ',pet_photo='images/dog2.jpg' ):
     """Проверяем что можно добавить питомца с корректными данными"""
     pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)  # получем полный путь изображения питомца и сохраняем
     #  в переменную pet_photo
     _, auth_key = pf.get_api_key(valid_email, valid_password)  #запрашиваем api ключ и сохраняем в переменную auth_key
-    status, result = pf.add_new_pets(auth_key, name, animal_type, age, pet_photo)  # pet_photo
+    status, result = pf.add_new_pets(auth_key, name, animal_type, age, pet_photo)
     assert status == 200  # сверяем статус
     assert result['name'] == name # и имя питомца соответствует заданному
 
@@ -134,22 +134,23 @@ def test_add_pet_photo_valid_data( pet_photo = 'images/dog1.jpg'):
     assert len(result['pet_photo']) > 0  # Проверяем добавилось ли фото
 
 
-def test_add_pet_photo_valid_data( pet_photo = 'images/1.png'):
+def test_add_pet_photo_valid_data(pet_photo='images/1.png'):
     """Проверяем что можно добавить фото (в формате   .png) питомца с корректными данными """
-    pet_photo = os.path.join(os.path.dirname(__file__),pet_photo)  # получем полный путь изображения питомца и сохраняем
-    _, auth_key = pf.get_api_key(valid_email, valid_password) #запрашиваем api ключ и сохраняем в переменную auth_key
+    pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)  # получем полный путь изображения питомца и сохраняем
+    _, auth_key = pf.get_api_key(valid_email, valid_password)  # запрашиваем api ключ и сохраняем в переменную auth_key
     _, my_pets = pf.get_list_of_pets(auth_key, "my_pets")
-    if len( my_pets['pets']) == 0 :
+    if len(my_pets['pets']) == 0:
         pf.add_info_new_pet(auth_key, name='dog1', animal_type='dog1', age='1')
-        _,my_pets = pf.get_list_of_pets(auth_key, 'my_pets')
+        _, my_pets = pf.get_list_of_pets(auth_key, 'my_pets')
     # Берём id первого питомца из списка
     pet_id = my_pets['pets'][0]["id"]
     status, result = pf.add_pet_photo(auth_key, pet_id, pet_photo)
     # ещё раз запрашиваем список своих питомцев
     _, my_pets = pf.get_list_of_pets(auth_key, "my_pets")
     # Проверяем что статус ответа равен 200
-    assert status == 200 # Проверяем что статус ответа 200  , выдает статус код 500   """bag нельзя добавть фото в профиль в формате png"""
-    assert len(result['pet_photo']) > 0 # Проверяем добавилось ли фото
+    assert status == 200  # Проверяем что статус ответа 200  , выдает статус код 500
+    # """bag нельзя добавть фото в профиль в формате png"""
+    assert len(result['pet_photo']) > 0  # Проверяем добавилось ли фото
     """bag нельзя добавить фото в профиль в формате png"""
 
 

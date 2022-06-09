@@ -2,11 +2,13 @@ import requests
 import json
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 from settings import valid_email, valid_password
-class PetFriends :
+class PetFriends:  # api библиотека к веб приложению Pet Friends
     def __init__(self):
         self.base_url = "https://petfriends.skillfactory.ru/"
 
-    def get_api_key(self,email , password): #
+    def get_api_key(self,email , password):
+        """Метод делает запрос к API сервера и возвращает статус запроса и результат в формате
+                JSON с уникальным ключем пользователя, найденного по указанным email и паролем"""
         headers = {
             'email' : email,
             'password' : password
@@ -22,6 +24,10 @@ class PetFriends :
 
 
     def get_list_of_pets(self,auth_key, filter):
+        """Метод делает запрос к API сервера и возвращает статус запроса и результат в формате JSON
+        со списком наденных питомцев, совпадающих с фильтром. На данный момент фильтр может иметь
+        либо пустое значение - получить список всех питомцев, либо 'my_pets' - получить список
+        собственных питомцев"""
         headers = {'auth_key': auth_key['key']}
         filter = {'filter': filter}
 
@@ -35,7 +41,9 @@ class PetFriends :
         return status, result
 
     def add_new_pets(self, auth_key : json, name : str, animal_type: str,
-                     age: str, pet_photo: str): #pet_photo: str
+                     age: str, pet_photo: str):
+        """Метод отправляет (постит) на сервер данные о добавляемом питомце и возвращает статус
+        запроса на сервер и результат в формате JSON с данными добавленного питомца"""
         data = MultipartEncoder(
             fields={
                 'name': name,
