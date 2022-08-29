@@ -1,0 +1,5 @@
+import pytest-selenium
+import time
+import pytest
+pytest~=6.2.5
+selenium~=3.141.0
