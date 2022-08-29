@@ -1,7 +1,7 @@
 Introduction
 ------------
 
-This repository contains basic example of usage PageObject
+
 pattern with Selenium and Python (PyTest + Selenium).
 
 
